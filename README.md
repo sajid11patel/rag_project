@@ -14,7 +14,7 @@ A modular, interview-ready **Retrieval-Augmented Generation (RAG)** system where
 ## 🌟 Live Demo
 
 - **UI:** *(https://ragproject-9thmyrnchffpb77oa2wpss.streamlit.app/)*
-- **API docs:** *(https://rag-backend-oops.onrender.com)*
+- **API docs:** *(https://rag-project-oops.onrender.com)*
 
 ---
 
