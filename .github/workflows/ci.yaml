@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   build-and-push:
@@ -19,8 +16,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Validate Compose configuration
-        run: docker compose config -q
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set lowercase image owner
         run: echo "OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
@@ -28,21 +29,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Log in to GitHub Container Registry
-        if: github.event_name == 'push'
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and publish project image
+      - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: ${{ github.event_name == 'push' }}
+          push: true
           tags: |
-            ghcr.io/${{ env.OWNER_LC }}/rag-project-backend:latest
-            ghcr.io/${{ env.OWNER_LC }}/rag-project-backend:${{ github.sha }}
-            ghcr.io/${{ env.OWNER_LC }}/rag-project-frontend:latest
-            ghcr.io/${{ env.OWNER_LC }}/rag-project-frontend:${{ github.sha }}
+            ghcr.io/${{ env.OWNER_LC }}/rag-project:latest
+            ghcr.io/${{ env.OWNER_LC }}/rag-project:${{ github.sha }}
