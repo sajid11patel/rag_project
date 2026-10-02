@@ -9,7 +9,7 @@
 
 A modular, interview-ready **Retrieval-Augmented Generation (RAG)** system where every module has a single responsibility — ingestion, retrieval, routing, generation, and the API/UI layer are all fully decoupled and independently testable.
 
----
+-----
 
 ## 🌟 Live Demo
 
